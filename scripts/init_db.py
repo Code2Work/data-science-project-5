@@ -10,7 +10,7 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 cur.execute("""
-CREATE TABLE customers (
+CREATE TABLE IF NOT EXISTS customers (
     customer_id SERIAL PRIMARY KEY,
     full_name VARCHAR(100),
     email VARCHAR(100),
@@ -19,7 +19,7 @@ CREATE TABLE customers (
 """)
 
 cur.execute("""
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
     order_id SERIAL PRIMARY KEY,
     customer_id INT REFERENCES customers(customer_id),
     order_date DATE,
@@ -29,7 +29,7 @@ CREATE TABLE orders (
 """)
 
 cur.execute("""
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
     product_id SERIAL PRIMARY KEY,
     product_name VARCHAR(100),
     price NUMERIC(10,2),
@@ -41,7 +41,9 @@ cur.execute("""
 INSERT INTO customers (full_name, email, signup_date) VALUES
 ('Ali Veli', 'ali@example.com', '2023-01-01'),
 ('Ayşe Yılmaz', 'ayse@example.com', '2023-02-15'),
-('Mehmet Can', 'mehmet@example.com', '2022-12-10');
+('Mehmet Can', 'mehmet@example.com', '2022-12-10'),
+('Zeynep Ak', NULL, '2023-03-01'),
+('Deniz Yıldız', 'denizyildiz.com', '2023-04-01');
 """)
 
 cur.execute("""
@@ -55,7 +57,8 @@ cur.execute("""
 INSERT INTO products (product_name, price, category) VALUES
 ('Laptop', 1500.00, 'Electronics'),
 ('Tablet', 800.00, 'Electronics'),
-('Buzdolabı', 1200.00, 'Appliances');
+('Buzdolabı', 1200.00, 'Appliances'),
+('Mouse', 250.00, NULL);
 """)
 
 conn.commit()
